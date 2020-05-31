@@ -2,7 +2,9 @@ package com.robertlevonyan.demo.camerax.fragments
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.hardware.display.DisplayManager
 import android.os.Bundle
@@ -97,7 +99,7 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(R.layout.fragment_video
         // This swipe gesture adds a fun gesture to switch between video and photo
         val swipeGestures = SwipeGestureDetector().apply {
             setSwipeCallback(left = {
-                Navigation.findNavController(view).navigate(R.id.action_video_to_camera)
+              //  Navigation.findNavController(view).navigate(R.id.action_video_to_camera)
             })
         }
         val gestureDetectorCompat = GestureDetector(requireContext(), swipeGestures)
@@ -191,8 +193,8 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(R.layout.fragment_video
      * Navigate to PreviewFragment
      * */
     fun openPreview() {
-        if (!outputDirectory.listFiles().isNullOrEmpty())
-            view?.let { Navigation.findNavController(it).navigate(R.id.action_video_to_preview) }
+       // if (!outputDirectory.listFiles().isNullOrEmpty())
+         //   view?.let { Navigation.findNavController(it).navigate(R.id.action_video_to_preview) }
     }
 
     private fun recordVideo(videoCapture: VideoCapture) {
@@ -210,6 +212,11 @@ class VideoFragment : BaseFragment<FragmentVideoBinding>(R.layout.fragment_video
                         setGalleryThumbnail(file)
                         val msg = "Video saved in ${file.absolutePath}"
                         Log.d("CameraXDemo", msg)
+                        val returnIntent = Intent()
+                        returnIntent.putExtra("TEST", file.absolutePath)
+                        requireActivity().setResult(Activity.RESULT_OK, returnIntent)
+                        requireActivity().finish()
+
                     }
 
                     override fun onError(
